@@ -1,0 +1,56 @@
+html, body {
+    height: 100%;
+}
+.body-content {
+    height: 100%;
+    padding-top: 40px;
+}
+.component-list {
+    flex: 1 0 250px;
+    width: 250px;
+    max-width: 250px;
+}
+
+
+.component-content {
+    flex: 9 9 auto;
+    overflow: scroll;
+}
+.component-item {
+    cursor: pointer;
+}
+.component-item.active {
+    background-color: #4fd1c5;
+}
+.component-code-wrapper {
+    overflow: scroll;
+}
+
+.result {
+    width: 100%;
+}
+.readme-result {
+    width: 100%;
+}
+.arrow-tip {
+    content: ' ';
+    border: 10px solid white;
+    right: -31px;
+    top: 12px;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    transform: rotate(-45deg);
+    display: none;
+    box-shadow: -3px -2px 8px -6px black;
+}
+.component-item.active  .arrow-tip {
+    display: inline;
+}
+.component-preview  {
+    margin: 0 auto;
+    min-height: 400px;
+}
+
+.component-code-section {
+    background-color:#F0F0F0;
+}

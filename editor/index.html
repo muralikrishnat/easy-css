@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Template HTML</title>
+</head>
+
+<body>
+  <div class="tool-bar d-flex">
+    <div class="flex-1 pr-4 pl-4 flex space-between align-items-center">
+      <div class="flex">
+        <div>Component Editor</div>
+        <div class="ml-2">
+            <input type="text" name="componentname" class="input-txt"/>
+        </div>
+      </div>
+      <div>
+        <button type="button"> Live Preview</button>
+      </div>
+    </div>
+    <div class="flex-1 pr-4 pl-4 flex align-items-center space-between">
+      <div>
+        <button  type="button" class="mr-4" onclick="appEngine.resizePreview(1)">&lt;</button>
+        <button type="button" onclick="appEngine.resizePreview(0)">&gt;</button>
+      </div>
+      <div>
+        <button type="button" onclick="appEngine.saveToServer()">Save To Server </button>
+      </div>
+    </div>
+  </div>
+  <div class="editor-container d-flex">
+    <div class="editor-box flex-2">
+      <div id="editor" class="editor"></div>
+    </div>
+    <div class="editor-preview flex-2">
+      <iframe title="preview" class="result" src="preview.html"></iframe>
+    </div>
+  </div>
+  
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+Component:-
+
+Component: {
+    name: "Global Header",
+    files: [],
+    screens: [],
+    configs: []
+}
+
+{
+    name: "Header",
+    configs: []
+}
