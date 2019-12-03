@@ -37,19 +37,20 @@ window.editor = editor;
 
 
 var isValidHTML = function(htmlString) {
-    var doc = document.createElement("DIV");
-    doc.innerHTML = htmlString;
-    if (doc.innerHTML === htmlString) {
-        // doc.querySelectorAll('[class]').forEach(elem =>)
-        if (htmlString.match(/class="(.*?)"/igm)) {
-            htmlString.match(/class="(.*?)"/igm).forEach(item => {
-                var classNameValue = item.split('"')[1];
-            });
-        }
-        return {};
-    } else {
-        return null;
-    }
+    // var doc = document.createElement("DIV");
+    // doc.innerHTML = htmlString;
+    // if (doc.innerHTML === htmlString) {
+    //     // doc.querySelectorAll('[class]').forEach(elem =>)
+    //     if (htmlString.match(/class="(.*?)"/igm)) {
+    //         htmlString.match(/class="(.*?)"/igm).forEach(item => {
+    //             var classNameValue = item.split('"')[1];
+    //         });
+    //     }
+    //     return {};
+    // } else {
+    //     return null;
+    // }
+    return true;
 };
 
 var previewHtml = function(opts) {
@@ -140,9 +141,9 @@ var previewHtml = function(opts) {
             var ifrm = document.querySelector('.result');
             var idocument = ifrm.contentDocument ? ifrm.contentDocument : ifrm.contentWindow.document;
             if (appEngine.fileType === 'md')  {
-                idocument.querySelector('link').href="css/md-styles.css";
+                idocument.querySelector('link').href="http://localhost:8080/css/md-styles.css";
             } else {
-                idocument.querySelector('link').href="css/tailwind-generated.css";
+                idocument.querySelector('link').href="http://localhost:8080/css/tailwind-generated.css";
             }
             
             var mdContent = await fetchComponentHtml(appEngine.componentId, appEngine.fileType, appEngine.variation);
@@ -163,9 +164,11 @@ var previewHtml = function(opts) {
             document.querySelector('.insert-component-modal').classList.remove('show');
         },
         downloadHtml() {
+            var ifrm = document.querySelector('.result');
+            var idocument = ifrm.contentDocument ? ifrm.contentDocument : ifrm.contentWindow.document;
             var link = document.createElement('a');
             link.download = appEngine.componentId ?  appEngine.componentId + '.' + appEngine.fileType : 'page.html';
-            var blob = new Blob(['<html>' + $0.contentDocument.documentElement.innerHTML +  '</html>'], {type: 'text/html'});
+            var blob = new Blob(['<html>' + idocument.documentElement.innerHTML +  '</html>'], {type: 'text/html'});
             link.href = window.URL.createObjectURL(blob);
             link.click();
         }
