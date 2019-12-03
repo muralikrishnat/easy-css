@@ -258,14 +258,71 @@ function shuffle(arra1) {
     }
     return arra1;
 }
+var sendResponse = function(body, componentType, response, request) {
+    response.setHeader('Access-Control-Allow-Origin', request.headers.origin || '*');
+    response.setHeader('Access-Control-Allow-Headers', allowedHeaders.join(','));
+    response.setHeader('Access-Control-Allow-Methods', 'GET,POST,DELETE,PATCH, OPTIONS');
+    response.setHeader('Access-Control-Allow-Credentials', true);
+    response.writeHead(200, {
+        'Content-Type': componentType
+    });
+    response.end(body);
+}
 module.exports = function(options) {
     let fePort = options.fePort;
     let folder = options.folder || 'app';
     var file = new nodeStatic.Server('./' + folder);
     var server = require('http').createServer((request, response) => {
-        if (request.method ===  'GET' && request.url.indexOf('/api/components/read-file') === 0) {
+        if (request.method ===  'POST' && request.url.indexOf('/api/components/create') === 0) {
+            let componentName = '';
+            let variation = 'default';
+            let requestUrl = require('url').parse(request.url);
+            requestUrl.query.split('&').forEach(item => {
+                if(item.split('=')[0] === 'componentname') {
+                    componentName = item.split('=')[1];
+                }
+                if(item.split('=')[0] === 'variation') {
+                    variation = item.split('=')[1];
+                }
+            });
+            var componentPath = path.join(__dirname, 'component-files', componentName);
+            if (!fs.existsSync(componentPath)) {
+                fs.mkdirSync(componentPath);
+            }
+            if (!fs.existsSync(path.join(componentPath, variation))) {
+                fs.mkdirSync(path.join(componentPath, variation));
+            }
+            fs.writeFileSync(path.join(componentPath, variation, 'html.html'), "", {
+                encoding: 'utf-8'
+            });
+            fs.writeFileSync(path.join(componentPath, variation, 'readme.md'), "", {
+                encoding: 'utf-8'
+            });
+            fs.writeFileSync(path.join(componentPath, variation, 'readme.html'), "", {
+                encoding: 'utf-8'
+            });
+
+            sendResponse(JSON.stringify({
+                created: true
+            }), "application/json", response, request);
+        } else if (request.method ===  'GET' && request.url.indexOf('/api/components/read-meta') === 0) {
+            var componentName = '';
+            var requestUrl = require('url').parse(request.url);
+            requestUrl.query.split('&').forEach(item => {
+                if(item.split('=')[0] === 'componentname') {
+                    componentName = item.split('=')[1];
+                }
+            });
+            var componentPath = path.join(__dirname, 'component-files', componentName);
+            var variations = fs.readdirSync(componentPath);
+            body = JSON.stringify({
+                variations
+            });
+            sendResponse(body, "application/json", response, request);
+        } else if (request.method ===  'GET' && request.url.indexOf('/api/components/read-file') === 0) {
             var filename = '';
             var componentName = '';
+            var variation = 'default';
             var requestUrl = require('url').parse(request.url);
             requestUrl.query.split('&').forEach(item => {
                 if(item.split('=')[0] === 'filename') {
@@ -274,12 +331,25 @@ module.exports = function(options) {
                 if(item.split('=')[0] === 'componentname') {
                     componentName = item.split('=')[1];
                 }
+                if(item.split('=')[0] === 'variation') {
+                    variation = item.split('=')[1];
+                }
             });
-            let filePath = path.join(__dirname, 'component-files', componentName, filename);
-            var fileContent = fs.readFileSync(filePath, {
-                encoding: 'utf-8'
-            });
-            body = fileContent;
+            var componentsPath = path.join(__dirname, 'component-files', componentName, variation);
+            let filePath = path.join(componentsPath, filename);
+            if (fs.existsSync(filePath)) {
+                var fileContent = fs.readFileSync(filePath, {
+                    encoding: 'utf-8'
+                });
+    
+                body = fileContent;
+            } else  {
+                body = "";
+            }
+            response.setHeader('Access-Control-Allow-Origin', request.headers.origin || '*');
+            response.setHeader('Access-Control-Allow-Headers', allowedHeaders.join(','));
+            response.setHeader('Access-Control-Allow-Methods', 'GET,POST,DELETE,PATCH, OPTIONS');
+            response.setHeader('Access-Control-Allow-Credentials', true);
             response.writeHead(200, {
                 'Content-Type': "text/html"
             });
@@ -290,6 +360,10 @@ module.exports = function(options) {
             body = JSON.stringify({
                 components: componentFiles
             });
+            response.setHeader('Access-Control-Allow-Origin', request.headers.origin || '*');
+            response.setHeader('Access-Control-Allow-Headers', allowedHeaders.join(','));
+            response.setHeader('Access-Control-Allow-Methods', 'GET,POST,DELETE,PATCH, OPTIONS');
+            response.setHeader('Access-Control-Allow-Credentials', true);
             response.writeHead(200, {
                 'Content-Type': "application/json"
             });
@@ -482,9 +556,13 @@ module.exports = function(options) {
                             var queryParamValue = "sample-component";
                             var requestUrl = require('url').parse(request.url);
                             var fileName = 'html.html';
+                            var variation = 'default';
                             requestUrl.query.split('&').forEach(item => {
                                 if(item.split('=')[0] === 'component') {
                                     queryParamValue = item.split('=')[1];
+                                }
+                                if(item.split('=')[0] === 'variation') {
+                                    variation = item.split('=')[1];
                                 }
                                 if(item.split('=')[0] === 'filetype' && item.split('=')[1] ===  'md') {
                                     fileName = 'readme.md';
@@ -493,7 +571,7 @@ module.exports = function(options) {
                                     fileName = 'readme.html';
                                 }
                             });
-                            let filePath = path.join(__dirname, 'component-files', queryParamValue, fileName);
+                            let filePath = path.join(__dirname, 'component-files', queryParamValue, variation, fileName);
                             fs.writeFileSync(filePath, body, {
                                 encoding: 'utf-8'
                             });
@@ -572,15 +650,19 @@ module.exports = function(options) {
                             responseContentType = 'text/html';
                             var requestUrl = require('url').parse(request.url);
                             var fileToSend = 'html.html';
+                            var variation = 'default';
                             requestUrl.query.split('&').forEach(item => {
                                 if(item.split('=')[0] === 'component') {
                                     queryParamValue = item.split('=')[1];
+                                }
+                                if(item.split('=')[0] === 'variation') {
+                                    variation = item.split('=')[1];
                                 }
                                 if(item.split('=')[0] === 'filetype' && item.split('=')[1] === 'md') {
                                     fileToSend = 'readme.md'
                                 }
                             });
-                            let componentHtmlPath = path.join(__dirname, 'component-files', queryParamValue, fileToSend);
+                            let componentHtmlPath = path.join(__dirname, 'component-files', queryParamValue, variation, fileToSend);
                             var fileContent = fs.readFileSync(componentHtmlPath, {
                                 encoding: 'utf-8'
                             });

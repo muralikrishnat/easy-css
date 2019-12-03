@@ -21,13 +21,21 @@
         </div>
       </div>
       <div>
-        <button type="button"> Live Preview</button>
+        <!-- <button type="button"> Live Preview</button> -->
+        <div class="show-else-component">
+          <button type="button" onclick="appEngine.showComponents()"> Insert Component </button> 
+        </div>
       </div>
     </div>
     <div class="flex-1 pr-4 pl-4 flex align-items-center space-between">
       <div>
-        <button  type="button" class="mr-4" onclick="appEngine.resizePreview(1)">&lt;</button>
-        <button type="button" onclick="appEngine.resizePreview(0)">&gt;</button>
+        <button  type="button" class="mr-4" onclick="appEngine.resizePreview(1, 5)">Desktop</button>
+        <button  type="button" class="mr-4" onclick="appEngine.resizePreview(1, 2)">Tablet</button>
+        <button  type="button" class="mr-4" onclick="appEngine.resizePreview(1, 1)">Mobile</button>
+        <button  type="button" class="mr-4" onclick="appEngine.resizePreview(1, 0)">Small Mobile</button>
+      </div>
+      <div>
+        <button type="button" class="mr-4" onclick="appEngine.downloadHtml()"> Download Html </button>
       </div>
       <div class="show-if-component hidden">
         <button type="button" onclick="appEngine.saveToServer()">Save To Server </button>
@@ -43,6 +51,23 @@
     </div>
   </div>
   
-<script type="text/javascript" src="app.bundle.js?f201db86b44fda94b2b6"></script></body>
+
+  <div class="modal insert-component-modal">
+    <div class="modal-mask"></div>
+    <div class="modal-content">
+      <div>
+        <label>Select Component: </label>
+        <select name="componentlist">
+          <option>--Select Component ---</option>
+        </select>
+      </div>
+
+      <div  class="mt-2">
+        <button  type="button"  onclick="appEngine.insertComponent()"> Insert Component </button>
+        <button  type="button"  onclick="appEngine.hideComponents()"> Cancel </button>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript" src="app.bundle.js?0441008a78f144dd1c99"></script></body>
 
 </html>

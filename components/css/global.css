@@ -1,56 +1,119 @@
-html, body {
-    height: 100%;
-}
-.body-content {
-    height: 100%;
-    padding-top: 40px;
-}
-.component-list {
-    flex: 1 0 250px;
-    width: 250px;
-    max-width: 250px;
+html,
+body {
+  height: 100%;
 }
 
+.body-content {
+  height: 100%;
+  padding-top: 40px;
+}
+
+.component-list {
+  flex: 1 0 250px;
+  width: 250px;
+  max-width: 250px;
+}
 
 .component-content {
-    flex: 9 9 auto;
-    overflow: scroll;
+  flex: 9 9 auto;
+  overflow: scroll;
 }
+
 .component-item {
-    cursor: pointer;
+  cursor: pointer;
 }
+
 .component-item.active {
-    background-color: #4fd1c5;
+  background-color: #4fd1c5;
 }
+
 .component-code-wrapper {
-    overflow: scroll;
+  overflow: scroll;
 }
 
 .result {
-    width: 100%;
+  width: 100%;
 }
+
 .readme-result {
-    width: 100%;
+  width: 100%;
 }
+
 .arrow-tip {
-    content: ' ';
-    border: 10px solid white;
-    right: -31px;
-    top: 12px;
-    border-right-color: transparent;
-    border-bottom-color: transparent;
-    transform: rotate(-45deg);
-    display: none;
-    box-shadow: -3px -2px 8px -6px black;
+  content: ' ';
+  border: 10px solid white;
+  right: -31px;
+  top: 12px;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  transform: rotate(-45deg);
+  display: none;
+  box-shadow: -3px -2px 8px -6px black;
 }
-.component-item.active  .arrow-tip {
-    display: inline;
+
+.component-item.active .arrow-tip {
+  display: inline;
 }
-.component-preview  {
-    margin: 0 auto;
-    min-height: 400px;
+
+.component-preview {
+  margin: 0 auto;
+  min-height: 400px;
 }
 
 .component-code-section {
-    background-color:#F0F0F0;
+  background-color: #F0F0F0;
+}
+
+.variations-section {
+  box-shadow: -4px 0px 6px -6px black;
+}
+
+.variations-heading {
+  padding: 5px 10px;
+  font-weight: bold;
+  color: indigo;
+}
+
+.variation-item {
+  padding: 5px 10px;
+  position: relative;
+}
+
+.variation-name {
+  cursor: pointer;
+}
+
+.variation-item.active {
+  color: indigo;
+}
+
+.modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal .modal-mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal .modal-content {
+  z-index: 1001;
+  background-color: white;
+  padding: 30px;
 }

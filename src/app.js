@@ -32,6 +32,8 @@ editor.on('change', function(e) {
     }
 });
 
+window.editor = editor;
+
 
 
 var isValidHTML = function(htmlString) {
@@ -79,12 +81,16 @@ var previewHtml = function(opts) {
     window.appEngine = {
         isEdit: false,
         componentId: null,
-        resizePreview: function(direction) {
+        components: [],
+        resizePreview: function(direction, flexToSet) {
             document.querySelector('.editor-preview').classList.remove('flex-' + resizeNumber);
             if (direction) {
                 resizeNumber = resizeNumber + 1;
             } else {
                 resizeNumber = resizeNumber - 1;
+            }
+            if (flexToSet != null) {
+                resizeNumber = flexToSet;
             }
             document.querySelector('.editor-preview').classList.add('flex-' + resizeNumber);
             setTimeout(() => {
@@ -103,7 +109,7 @@ var previewHtml = function(opts) {
             }
             if (componentId && componentId.length > 0) {
                 makeRequest({
-                    url: 'http://localhost:3434/api/component/save-code?component=' + componentId + '&filetype=' + appEngine.fileType,
+                    url: 'http://localhost:3434/api/component/save-code?component=' + componentId + '&filetype=' + appEngine.fileType + '&variation=' + appEngine.variation ,
                     method: 'POST',
                     body: editor.getValue(),
                     isPlain: true,
@@ -118,7 +124,7 @@ var previewHtml = function(opts) {
 
                 if (appEngine.fileType === 'md') {
                     makeRequest({
-                        url: 'http://localhost:3434/api/component/save-code?component=' + componentId + '&filetype=md-html',
+                        url: 'http://localhost:3434/api/component/save-code?component=' + componentId + '&filetype=md-html&variation=' + appEngine.variation,
                         method: 'POST',
                         body: converter.makeHtml(editor.getValue()),
                         isPlain: true,
@@ -139,39 +145,78 @@ var previewHtml = function(opts) {
                 idocument.querySelector('link').href="css/tailwind-generated.css";
             }
             
-            var mdContent = await fetchComponentHtml(appEngine.componentId, appEngine.fileType);
+            var mdContent = await fetchComponentHtml(appEngine.componentId, appEngine.fileType, appEngine.variation);
             editor.setValue(mdContent, -1);
             const markdown = converter.makeHtml(mdContent);
             previewHtml({htmlString: markdown});
+        },
+        showComponents() {
+            document.querySelector('.insert-component-modal').classList.add('show');
+        },
+        hideComponents() {
+            document.querySelector('.insert-component-modal').classList.remove('show');
+        },
+        async insertComponent() {
+            var componentToFetch = document.querySelector('[name="componentlist"]').value;
+            var componentHtml = await fetchComponentHtml(componentToFetch, 'html', 'default');
+            editor.insertSnippet(componentHtml, editor.getCursorPosition())
+            document.querySelector('.insert-component-modal').classList.remove('show');
+        },
+        downloadHtml() {
+            var link = document.createElement('a');
+            link.download = appEngine.componentId ?  appEngine.componentId + '.' + appEngine.fileType : 'page.html';
+            var blob = new Blob(['<html>' + $0.contentDocument.documentElement.innerHTML +  '</html>'], {type: 'text/html'});
+            link.href = window.URL.createObjectURL(blob);
+            link.click();
         }
-
     };
 })();
 
-var fetchComponentHtml = async function(componentId, fileType) {
-    var textContent = await fetch('http://localhost:3434/api/component?component=' + componentId + '&filetype=' + fileType).then(resp => resp.text()).then(textContent => {
+var fetchComponentHtml = async function(componentId, fileType, variation) {
+    var textContent = await fetch('http://localhost:3434/api/component?component=' + componentId + '&filetype=' + fileType + '&variation=' + variation).then(resp => resp.text()).then(textContent => {
         return textContent;
     });
     return textContent;
 }
 
+var fetchComponentLists = async function() {
+    return await fetch('http://localhost:3434/api/components/list').then(resp => resp.json()).then(resp => resp.components);
+};
+
 setTimeout(async function() {
     var componentId = null;
+    var variation = null;
     if  (location.href.split('?').length > 1) {
         var queryParams = location.href.split('?')[1].split('&');
         for (let i = 0; i < queryParams.length; i++) {
             if (queryParams[i].split('=')[0] === 'component') {
                 componentId = queryParams[i].split('=')[1];
-                break;
+            }
+            if (queryParams[i].split('=')[0] === 'variation') {
+                variation = queryParams[i].split('=')[1];
             }
         }
     }
     appEngine.fileType = 'html';
-    if (componentId) {
-        var textContent = await fetchComponentHtml(componentId, appEngine.fileType);
+    if (componentId && variation) {
+        var textContent = await fetchComponentHtml(componentId, appEngine.fileType, variation);
         editor.setValue(textContent, -1);
         appEngine.componentId = componentId;
+        appEngine.variation = variation;
         document.querySelectorAll('.show-if-component').forEach(elem => elem.classList.remove('hidden'));
+    } else {
+        var components = await fetchComponentLists();
+        appEngine.components = components;
+        if (appEngine.components &&  appEngine.components instanceof Array)  {
+            var componentsHtmlString = '';
+            appEngine.components.forEach(elem => {
+                componentsHtmlString += `
+                    <option value="${elem}">${elem.replace('-', ' ')}</option>
+                `;
+            });
+            document.querySelector('[name="componentlist"]').innerHTML = componentsHtmlString;
+        }
+        
     }
     appEngine.isEdit = true;
 }, 1000);
