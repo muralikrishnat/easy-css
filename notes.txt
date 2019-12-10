@@ -1,3 +1,5 @@
+https://nerdcave.com/tailwind-cheat-sheet
+
 Component:-
 
 Component: {
@@ -11,3 +13,9 @@ Component: {
     name: "Header",
     configs: []
 }
+
+
+Atoms
+Molecules
+Organisms
+Components

@@ -4,6 +4,33 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Components Server",
+            "program": "${workspaceFolder}/components-server.js",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "args": [
+                "--port=7680",
+                "--folder=components"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Theme Server",
+            "program": "${workspaceFolder}/theme-server.js",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "args": [
+                "--port=7677",
+                "--folder=themes"
+            ]
+        },
         {
             "type": "node",
             "request": "launch",

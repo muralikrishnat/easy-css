@@ -1,0 +1,13 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+.shadow-bottom-line {
+    box-shadow: 0 9px 1px -8px theme('color.black');
+}
+
+.min-height-200 {
+    min-height: 200px;
+}

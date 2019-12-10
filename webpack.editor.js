@@ -12,7 +12,7 @@ module.exports = {
     devtool: 'inline-source-map',
     devServer: {
         contentBase: './editor-dist',
-        port: 4748
+        port: 7676
     },
     plugins: [
         // new CleanWebpackPlugin(['dist/*']) for < v2 versions of CleanWebpackPlugin

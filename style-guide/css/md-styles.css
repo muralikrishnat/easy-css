@@ -1,0 +1,220 @@
+.md-preview {
+  /* @group Headings */
+  /* @end */
+  /* @group Block Quotes */
+  /* @end */
+  /* @group Pre-formatted and Code */
+  /* @end */
+  /* @group Tables */
+  /* @end */
+}
+
+.md-preview * {
+  margin: 0;
+  padding: 0;
+}
+
+.md-preview abbr,
+.md-preview acronym,
+.md-preview blockquote,
+.md-preview code,
+.md-preview dir,
+.md-preview kbd,
+.md-preview listing,
+.md-preview plaintext,
+.md-preview q,
+.md-preview samp,
+.md-preview tt,
+.md-preview var,
+.md-preview xmp {
+  hyphens: none;
+}
+
+.md-preview html {
+  padding: 2em;
+  font: normal 18px/1.25 Source Sans Pro, sans-serif;
+  color: #000;
+  hyphens: auto;
+  word-wrap: break-word;
+  background: #fff;
+}
+
+.md-preview body> :first-child {
+  margin-top: 0;
+}
+
+.md-preview h1,
+.md-preview h2,
+.md-preview h3,
+.md-preview h4,
+.md-preview h5,
+.md-preview h6 {
+  line-height: 1;
+  margin: 0;
+  margin-top: 1.5rem;
+  text-rendering: optimizeLegibility;
+}
+
+.md-preview h1 {
+  font-size: 2.75rem;
+}
+
+.md-preview h2 {
+  font-size: 2rem;
+}
+
+.md-preview h3 {
+  font-size: 1.65rem;
+}
+
+.md-preview h4 {
+  font-size: 1.25rem;
+}
+
+.md-preview h5 {
+  font-size: 1.1rem;
+}
+
+.md-preview h6 {
+  font-size: 1rem;
+}
+
+.md-preview h2 em,
+.md-preview h3 em {
+  color: grey;
+}
+
+.md-preview small {
+  font-size: 65%;
+}
+
+.md-preview p {
+  margin-top: 0.75rem;
+}
+
+.md-preview hr {
+  margin: 0.75rem 0;
+  opacity: 0.5;
+}
+
+.md-preview ol,
+.md-preview ul {
+  margin-top: 0.75rem;
+}
+
+.md-preview ol ul,
+.md-preview ol ol,
+.md-preview ul ul,
+.md-preview ul ol {
+  margin-left: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.md-preview li {
+  margin: 0.5em 0;
+}
+
+.md-preview abbr {
+  font-variant: small-caps;
+  font-weight: 600;
+  text-transform: lowercase;
+  color: #808080;
+}
+
+.md-preview abbr[title]:hover {
+  cursor: help;
+}
+
+.md-preview blockquote {
+  border-left: 5px solid #333;
+  padding-left: 0.75em;
+  margin-left: calc(-0.75em - 5px);
+  font-style: italic;
+}
+
+.md-preview blockquote+figcaption {
+  display: block;
+  margin-top: -1.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 75%;
+  text-align: right;
+}
+
+.md-preview blockquote+figcaption:before {
+  content: "— ";
+  opacity: 0.05;
+}
+
+.md-preview pre {
+  overflow: auto;
+  margin: 0.75rem 0;
+  padding: 0.5rem;
+  font-size: 0.875em;
+  white-space: pre;
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.md-preview code {
+  padding: 0 0.25em;
+  white-space: pre;
+  font-family: Source Code Pro, monospace;
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.md-preview pre code {
+  padding: 0;
+  word-wrap: normal;
+  white-space: pre-wrap;
+}
+
+.md-preview pre code,
+.md-preview pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+.md-preview table {
+  margin: 0.75rem 0;
+  padding: 0;
+  border-collapse: collapse;
+}
+
+.md-preview table tr {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.md-preview table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+.md-preview table tr th {
+  margin: 0;
+  padding: 0.35em 0.75em;
+  font-weight: bold;
+  text-align: left;
+  border: 1px solid #ccc;
+}
+
+.md-preview table tr td {
+  margin: 0;
+  padding: 0.35em 0.75em;
+  text-align: left;
+  border: 1px solid #ccc;
+}
+
+.md-preview table tr th :first-child,
+.md-preview table tr td :first-child {
+  margin-top: 0;
+}
+
+.md-preview table tr th :last-child,
+.md-preview table tr td :last-child {
+  margin-bottom: 0;
+}
